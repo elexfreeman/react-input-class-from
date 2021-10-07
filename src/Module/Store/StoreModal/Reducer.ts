@@ -1,4 +1,4 @@
-import { ReducerPayloadI } from "../../clm-ui-kit/src/ClmBase/Sys/ReduxI";
+import { ReducerPayloadI } from "../ReduxI";
 import Constants from "./Constants";
 
 export interface StoreStateI {

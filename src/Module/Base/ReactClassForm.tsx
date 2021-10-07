@@ -1,81 +1,75 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 
-import {Subject} from 'rxjs';
-import store from '../Store/Store';
-import ConstantsModal from '../StoreModal/Constants'
+import { Subject } from 'rxjs';
 
 
 // тип события клика
 export type ftOnEditDone = (vProduct: ReactClassForm) => void;
 
-export interface BasePropsI {}
+export interface BasePropsI {
+  fOnChange: (data: any) => void;
+}
 
-export interface BaseStateI {}
+export interface BaseStateI { }
 
+/**
+ * загрузчик стейта для рекат компонента
+ * @param props 
+ * @param state 
+ */
+export const fLoadState = (props: any, state: any) => {
+  state = {};
+  for (let k in props) {
+    if (k !== 'fOnChange') {
+      state[k] = props[k]
+    }
+  }
+}
 
-export class ReactClassForm extends React.Component<BasePropsI, BaseStateI> {
+export class ReactClassForm {
 
+  protected state: BaseStateI = {};
 
-	protected subject = new Subject<ReactClassForm>();
+  protected subject = new Subject<ReactClassForm>();
 
+  constructor() {
+  }
 
-	// бробрасываемый метод события клика
-	protected fOnEditDone: ftOnEditDone | null = null;
-
-	constructor(props: BasePropsI) {
-		super(props);
-	}
-
-
-	public fSetOnEditDone(pFn: ftOnEditDone) {
-		this.fOnEditDone = pFn;
-	}
-
-	public fGetEditForm(): React.ReactNode {
-		return <Fragment></Fragment>
-	}
-
-	/**
-	 * клип по кнопке редактирование завершено
-	 */
-	fEditDoneClick() {
-		if (this.fOnEditDone) {
-			this.fOnEditDone(this);
-		}
-	}
+  // бробрасываемый метод события клика
+  protected fOnEditDone(self: ReactClassForm) {
+    this.subject.next(self);
+  }
 
 
-	/**
-	 * Вызов формы редактирования полей класса 
-	 * @returns Promice<TstProduct>
-	 */
-	public faGetEditedData(): Promise<TstProduct> {
+  protected fOnChangeData = (data: any) => {
+    let state: any = this.state;
+    for (let k in data) {
+      state[k] = data[k];
+    }
+    this.fOnEditDone(this);
+  }
 
-		return new Promise((resolve, reject) => {
 
-			store.dispatch({
-				type: ConstantsModal.sSetData,
-				payload: {
-					bShowModal: true,
-					vModalContent: this.fGetEditForm(),
-					fOnBtnClick: () => {this.subject.next(this);},
-				}
-			});
+  public fGetEditForm(): React.ReactNode {
+    return (<Fragment></Fragment>);
+  }
 
-			this.subject.asObservable().subscribe((data: ReactClassForm) => {
-				store.dispatch({
-					type: ConstantsModal.sSetData,
-					payload: {
-						bShowModal: false,
-						fOnBtnClick: () => {},
-					}
-				});
-				// завершаем обещани
-				resolve(data)
-			});
+  /**
+   * Вызов формы редактирования полей класса 
+   * @returns Promice<TstProduct>
+   */
+  public faGetEditedData(): Promise<ReactClassForm> {
+    return new Promise((resolve) => {
+      this.subject.asObservable().subscribe((data: ReactClassForm) => {
+        resolve(data)
+      });
+    });
+  }
 
-		});
 
-	}
+  public fGetState(): BaseStateI {
+    return this.state;
+  }
+
 
 }

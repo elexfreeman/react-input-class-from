@@ -1,6 +1,8 @@
-import { ReducerPayloadI } from "../../clm-ui-kit/src/ClmBase/Sys/ReduxI";
+import { ReducerPayloadI } from "../ReduxI";
 import Constants from "./Constants";
 import { StoreStateI } from "./Reducer";
+
+
 
 export type PayloadT = (param: ReducerPayloadI<StoreStateI>) => void;
 

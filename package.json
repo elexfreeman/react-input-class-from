@@ -17,6 +17,7 @@
     "@types/styled-components": "^5.1.11",
     "archiver": "^5.2.0",
     "bootstrap": "^5.0.0",
+    "create-react-class": "^15.7.0",
     "history": "^5.0.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
