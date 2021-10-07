@@ -1,19 +1,22 @@
-import React, { Component, Fragment } from 'react';
-import { ReactClassForm, BasePropsI, BaseStateI, fLoadState } from '../Base/ReactClassForm';
+import React, {Component, Fragment} from 'react';
+import * as F from '../Base/FormCtrl';
 
-export interface PropsI extends BasePropsI {
+
+export interface StateI extends F.BaseDataI {
   sName: string;
 }
 
-export interface StateI extends BaseStateI {
-  sName: string;
+export interface PropsI {
+  vFormCtrl: F.FormCtrl<StateI>;
 }
 
-class Cmp extends React.Component<PropsI, StateI> {
+
+export default class Cmp extends React.Component<PropsI, StateI> {
 
   constructor(props: PropsI) {
     super(props);
-    fLoadState(props, this.state);
+    let that: any = this;
+    that.state = {...this.props.vFormCtrl.fGetInitData() }
   }
 
   render() {
@@ -22,12 +25,15 @@ class Cmp extends React.Component<PropsI, StateI> {
         <div className="mb-3">
           <label className="form-label">Name</label>
           <input
-            onChange={(event) => { this.setState({ sName: event.target.value }) }}
+            onChange={(event) => {this.setState({sName: event.target.value})}}
             type="text"
             className="form-control"
             placeholder=""
           />
-          <button onClick={() => { this.props.fOnChange(this.state) }} type="button" className="btn btn-primary">Submit</button>
+          <button
+            onClick={() => {this.props.vFormCtrl.fCommit(this.state)}}
+            type="button"
+            className="btn btn-primary">Submit</button>
         </div>
       </div>
     )
@@ -35,15 +41,3 @@ class Cmp extends React.Component<PropsI, StateI> {
 
 }
 
-export class Product extends ReactClassForm {
-
-  state: StateI = {
-    sName: '',
-  };
-
-
-  fGetEditForm(): React.ReactNode {
-    return (<Cmp fOnChange={this.fOnChangeData} {...this.state} />);
-  }
-
-}
