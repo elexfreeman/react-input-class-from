@@ -5,6 +5,9 @@ import { BrowserRouter as Router, HashRouter, Route, Link } from "react-router-d
 import { Provider } from "react-redux";
 import store from "./Module/Store/Store";
 
+import 'spectre.css/dist/spectre.min.css';
+import './Module/Main.css';
+
 
 import App from "./Module/App/App";
 import * as serviceWorker from './serviceWorker';

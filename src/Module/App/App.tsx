@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter as Router, HashRouter, Route, Link} from "react-router-dom";
 import {connect, ConnectedProps} from 'react-redux';
 import {StoreStateI} from '../Store/Store';
 import * as F from '../Base/FormCtrl';
@@ -42,7 +41,7 @@ export class App extends React.Component<PropsI, StateI> {
 
   render() {
     return (
-      <div className="container">
+      <div className="container center-content">
         <Product vFormCtrl={this.vFormCtrl} />
       </div>
     )

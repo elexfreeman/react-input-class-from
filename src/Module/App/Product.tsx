@@ -16,18 +16,18 @@ export default class Cmp extends React.Component<PropsI, StateI> {
   constructor(props: PropsI) {
     super(props);
     let that: any = this;
-    that.state = {...this.props.vFormCtrl.fGetInitData() }
+    that.state = {...this.props.vFormCtrl.fGetInitData()}
   }
 
   render() {
     return (
       <div>
-        <div className="mb-3">
+        <div className="form-group">
           <label className="form-label">Name</label>
           <input
             onChange={(event) => {this.setState({sName: event.target.value})}}
             type="text"
-            className="form-control"
+            className="form-input"
             placeholder=""
           />
           <button
